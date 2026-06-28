@@ -1,0 +1,30 @@
+[project]
+name = "hubeau-live"
+version = "0.1.0"
+requires-python = ">=3.13"
+
+dependencies = [
+    "fastapi>=0.115.5",
+    "uvicorn[standard]>=0.32.1",
+    "hubeau-data>=0.3.0",
+    "pydantic>=2.10.1",
+    "pydantic-settings>=2.6.1",
+    "aiosqlite>=0.20.0",
+    "slowapi>=0.1.9",
+    "httpx>=0.28.1",
+]
+
+[dependency-groups]
+dev = [
+    "ruff>=0.11.10",
+]
+
+[tool.ruff]
+line-length = 88
+src = ["backend"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["app"]
