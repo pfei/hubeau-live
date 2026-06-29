@@ -1,0 +1,24 @@
+[1mdiff --git a/docker-compose.yml b/docker-compose.yml[m
+[1mindex 537aa5f..bda1da8 100644[m
+[1m--- a/docker-compose.yml[m
+[1m+++ b/docker-compose.yml[m
+[36m@@ -18,5 +18,19 @@[m [mservices:[m
+           cpus: "0.5"[m
+           memory: 512M[m
+ [m
+[32m+[m[32m  nginx:[m
+[32m+[m[32m    build:[m
+[32m+[m[32m      context: .[m
+[32m+[m[32m      dockerfile: nginx/Dockerfile[m
+[32m+[m[32m    ports:[m
+[32m+[m[32m      - "80:80"[m
+[32m+[m[32m    depends_on:[m
+[32m+[m[32m      - backend[m
+[32m+[m[32m    deploy:[m
+[32m+[m[32m      resources:[m
+[32m+[m[32m        limits:[m
+[32m+[m[32m          cpus: "0.25"[m
+[32m+[m[32m          memory: 128M[m
+[32m+[m[41m          [m
+ volumes:[m
+   backend_data:[m
