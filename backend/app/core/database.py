@@ -26,6 +26,10 @@ async def get_db() -> aiosqlite.Connection:
             if _db is None:
                 Path(settings.db_path).parent.mkdir(parents=True, exist_ok=True)
                 _db = await aiosqlite.connect(settings.db_path)
+
+                await _db.execute("PRAGMA max_page_count = 25600")
+                await _db.execute("PRAGMA auto_vacuum = FULL")
+
                 await _db.execute(
                     """
                     CREATE TABLE IF NOT EXISTS cache (
