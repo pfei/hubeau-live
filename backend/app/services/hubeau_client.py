@@ -80,7 +80,9 @@ async def get_observations(
         if ts not in merged:
             merged[ts] = {"timestamp": ts, "flow_m3s": None, "height_m": None}
         if o.grandeur_hydro == "Q":
-            merged[ts]["flow_m3s"] = o.resultat_obs
+            merged[ts]["flow_m3s"] = (
+                o.resultat_obs / 1000 if o.resultat_obs is not None else None
+            )
         elif o.grandeur_hydro == "H":
             # Hub'Eau returns height in mm — convert to metres
             merged[ts]["height_m"] = (
