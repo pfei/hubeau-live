@@ -1,0 +1,16 @@
+repos:
+  - repo: local
+    hooks:
+      - id: ruff-check
+        name: Ruff Check (backend)
+        entry: uv run ruff check .
+        language: system
+        pass_filenames: false
+        stages: [pre-commit]
+
+      - id: ci-check
+        name: Run Full CI (backend lint/test + frontend build)
+        entry: bash scripts/ci-check.sh
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

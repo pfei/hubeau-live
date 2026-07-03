@@ -9,6 +9,7 @@ import asyncio
 import json
 import time
 from pathlib import Path
+from typing import Any
 
 import aiosqlite
 
@@ -43,7 +44,7 @@ async def get_db() -> aiosqlite.Connection:
     return _db
 
 
-async def cache_get(key: str) -> dict | list | None:
+async def cache_get(key: str) -> dict[str, Any] | list[Any] | None:
     """Return cached value, or None if missing or expired."""
     db = await get_db()
     async with db.execute(
@@ -59,7 +60,9 @@ async def cache_get(key: str) -> dict | list | None:
     return json.loads(value)
 
 
-async def cache_set(key: str, value: dict | list, ttl: int | None = None) -> None:
+async def cache_set(
+    key: str, value: dict[str, Any] | list[Any], ttl: int | None = None
+) -> None:
     """Store a value with a TTL in seconds (defaults to settings.cache_ttl_seconds)."""
     ttl = ttl if ttl is not None else settings.cache_ttl_seconds
     expires_at = time.time() + ttl

@@ -24,6 +24,9 @@ jobs:
       - name: Run Ruff Linter
         run: uv run ruff check .
 
+      - name: Run Pyright
+        run: uv run pyright backend/app
+
       - name: Run tests
         run: uv run pytest
 
