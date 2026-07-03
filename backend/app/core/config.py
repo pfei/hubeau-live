@@ -23,6 +23,9 @@ class Settings(BaseSettings):
     # Comma-separated list of allowed CORS origins
     cors_origins: str = "http://localhost:5173"
 
+    # Sentry — optional, disabled if empty
+    sentry_dsn_backend: str = ""
+
     @property
     def cors_origins_list(self) -> list[str]:
         return [o.strip() for o in self.cors_origins.split(",")]

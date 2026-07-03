@@ -2,8 +2,11 @@ import asyncio
 import logging
 from contextlib import asynccontextmanager
 
+import sentry_sdk
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from sentry_sdk.integrations.fastapi import FastApiIntegration
+from sentry_sdk.integrations.starlette import StarletteIntegration
 from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
@@ -32,6 +35,18 @@ async def _purge_loop():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
+    if settings.sentry_dsn_backend:
+        sentry_sdk.init(
+            dsn=settings.sentry_dsn_backend,
+            environment=settings.app_env,
+            traces_sample_rate=0.2,  # 20% of requests traced
+            send_default_pii=False,
+            integrations=[
+                StarletteIntegration(),
+                FastApiIntegration(),
+            ],
+        )
+        logger.info("Sentry enabled (env=%s)", settings.app_env)
     task = asyncio.create_task(_purge_loop())
     logger.info("hubeau-live started (env=%s)", settings.app_env)
     yield
