@@ -11,6 +11,7 @@ from slowapi import Limiter, _rate_limit_exceeded_handler
 from slowapi.errors import RateLimitExceeded
 from slowapi.util import get_remote_address
 
+from app.api.v1.endpoints.sentry_tunnel import router as sentry_tunnel_router
 from app.api.v1.router import router
 from app.core.config import settings
 from app.core.database import cache_purge_expired
@@ -74,3 +75,6 @@ app.include_router(router)
 @app.get("/health")
 async def health():
     return {"status": "ok"}
+
+
+app.include_router(sentry_tunnel_router)
