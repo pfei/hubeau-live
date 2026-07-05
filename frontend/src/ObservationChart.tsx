@@ -19,6 +19,8 @@ function formatTime(timestamp: string): string {
   });
 }
 
+const API_BASE = import.meta.env.VITE_API_URL ?? "";
+
 export default function ObservationChart({ series }: Props) {
   const data = series.observations.map((o) => ({
     time: formatTime(o.timestamp),
@@ -26,11 +28,18 @@ export default function ObservationChart({ series }: Props) {
     height: o.height_m,
   }));
 
+  const apiUrl = `${API_BASE}/api/v1/observations/${series.station.code}?period_hours=${series.period_hours}`;
+
   return (
     <div>
       <h2>
         {series.station.name} — last {series.period_hours}h
       </h2>
+      <p>
+        <a href={apiUrl} target="_blank" rel="noopener noreferrer">
+          ↗ API
+        </a>
+      </p>
 
       <h3>Discharge (m³/s)</h3>
       <ResponsiveContainer width="100%" height={250}>
